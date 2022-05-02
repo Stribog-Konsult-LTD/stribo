@@ -1,0 +1,6 @@
+.doctor-card {
+  width: 520px;
+  max-width: 520px;
+  word-wrap: break-word;
+  border: 1px solid lightgray;
+}

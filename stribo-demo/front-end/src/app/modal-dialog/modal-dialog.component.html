@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>{{ data.dialog.title }}</h2>
+<mat-dialog-content>
+  <ng-container [ngTemplateOutlet]="data.dialog.dialogContent"> </ng-container>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button *ngIf="data.dialog.declineButtonTitle" mat-button mat-dialog-close>
+    {{ data.dialog.declineButtonTitle }}
+  </button>
+  <button type="submit"  mat-button  [attr.form]="data.dialog.formName" [mat-dialog-close]="true" cdkFocusInitial>
+    {{ data.dialog.acceptButtonTitle }}
+  </button>
+</mat-dialog-actions>
+

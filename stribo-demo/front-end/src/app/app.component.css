@@ -1,0 +1,26 @@
+.spacer {
+  flex: 1;
+}
+.doctor-profile-img {
+  min-width: 20px;
+  min-height: 40px;
+  border: 1px solid black;
+  background-color: bisque;
+}
+mat-grid-tile {
+  background: white;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.danger{
+  color: darkred;
+}
+
+
+.pholder > span{
+  color: darkred;
+  padding-right: 4px;
+}

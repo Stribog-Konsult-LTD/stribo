@@ -1,0 +1,18 @@
+[
+ {
+  "name": "Stoyan Michailov",
+  "uinCode": "123",
+  "email": "stoyan@abv.bg",
+  "phone": "778899",
+  "jobTitle": "MD",
+  "workPlace": "none"
+ },
+ {
+  "name": "Петър Петров",
+  "uinCode": "456",
+  "email": "pe6o@abv.bg",
+  "phone": "3215345",
+  "jobTitle": "MD",
+  "workPlace": "Sofia Med"
+ }
+]

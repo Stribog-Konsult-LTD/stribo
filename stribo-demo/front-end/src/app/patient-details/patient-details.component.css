@@ -1,0 +1,12 @@
+.key{
+  color: black;
+  font-weight: lighter;
+  padding-right: 2px;
+  font-weight: bold;
+}
+.value{
+  color: green;
+  font-weight: bold;
+  padding-right: 3px;
+  padding-left: 2px;
+}

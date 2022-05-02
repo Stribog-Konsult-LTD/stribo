@@ -1,0 +1,6 @@
+<p class=" float-end">
+  <span class="key">Name:</span><span class="value">{{currentPatient?.name}}</span>
+  <span class="key">Egn:</span><span class="value">{{currentPatient?.egn}}</span>
+  <span class="key">Email:</span><span class="value">{{currentPatient?.email}}</span>
+  <button (click)="removePatient()" mat-button color="warn" aria-label="delete patient" title="delete patient">delete</button>
+</p>

@@ -1,0 +1,219 @@
+<section *ngIf="backEndStatus != 'connected'; else isConnected">
+  <div class="alert alert-info text-center" role="alert">
+    <h2 class="alert-heading text-center">{{backEndStatus}}</h2>
+  </div>
+</section>
+<ng-template #isConnected>
+  <section *ngIf="doctorsCount == 0; else haveDoctors">
+    <div class="alert alert-info text-center" role="alert">
+      <h2 class="alert-heading text-center">THERE ARE NO DOCTORS !</h2>
+      <button (click)="addDoctor()" mat-raised-button color="primary">Create a doctor ?</button>
+    </div>
+  </section>
+  <ng-template #haveDoctors>
+    <section class="row">
+      <h3>Doctors available:{{doctorsCount}}</h3>
+      <div>
+        <button (click)="addDoctor()" mat-flat-button>Add a doctor ?</button>
+      </div>
+    </section>
+    <section class="row gap-3">
+      <section class="col" *ngFor="let doctor of doctors; index as i; first as isFirst">
+
+        <mat-card class="doctor-card">
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>{{doctor.name}}</mat-card-title>
+            <mat-card-subtitle>{{doctor.jobTitle}}</mat-card-subtitle>
+          </mat-card-header>
+          <img class="doctor-profile-img" mat-card-sm-imagemat-card-sm-image src="{{doctor.imageUrl}}"
+               alt="this is {{doctor.name}} img">
+          <mat-card-content>
+
+            <table>
+              <tr>
+                <td>uinCode:</td>
+                {{doctor.uinCode}}
+                <td></td>
+              </tr>
+              <tr>
+                <td>workPlace:</td>
+                {{doctor.workPlace}}
+                <td></td>
+              </tr>
+              <tr>
+                <td>Phone:</td>
+                <td>{{doctor.phone}}</td>
+              </tr>
+              <tr>
+                <td>E-mail:</td>
+                <td>{{doctor.email}}</td>
+              </tr>
+            </table>
+
+
+            <!--<mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title> Patients</mat-panel-title>
+                <mat-panel-description></mat-panel-description>
+              </mat-expansion-panel-header>
+              <div id="patients_{{doctor.id}}">
+                <app-patients [doctorId]="doctor.id"></app-patients>
+              </div>
+            </mat-expansion-panel>
+            <div class="mt-0 mb-1"></div>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  dev data
+                </mat-panel-title>
+                <mat-panel-description>
+
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <pre>{{doctor | json}}</pre>
+            </mat-expansion-panel>-->
+          </mat-card-content>
+          <mat-card-actions>
+            <button (click)="editDoctor(doctor)" mat-button color="primary">Edit doctor</button>
+            <button (click)="addPatient(doctor)" mat-button>Add patient</button>
+            <button (click)="removeDoctor(doctor)" mat-button color="warn" class="danger">Delete doctor</button>
+          </mat-card-actions>
+          <div>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title> Patients</mat-panel-title>
+                <mat-panel-description></mat-panel-description>
+              </mat-expansion-panel-header>
+              <div id="patients_{{doctor.id}}">
+                <app-patients [doctorId]="doctor.id"></app-patients>
+              </div>
+            </mat-expansion-panel>
+            <div class="mt-0 mb-1"></div>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  dev data
+                </mat-panel-title>
+                <mat-panel-description>
+
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <pre>{{doctor | json}}</pre>
+            </mat-expansion-panel>
+          </div>
+        </mat-card>
+
+      </section>
+    </section>
+  </ng-template>
+</ng-template>
+
+
+<!--Internaly used ng-templates-->
+<!-- when doctor added -->
+<ng-template #addDoctorDialogTemplate>
+  <form #addForm="ngForm" id="addForm" (ngSubmit)="onAddDoctor(addForm)">
+    <mat-form-field appearance="outline">
+      <mat-label>Name:</mat-label>
+      <input required matInput ngModel name="name" id="name">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>UIN Code:</mat-label>
+      <input required matInput ngModel name="uinCode" id="uinCode">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>E-mail:</mat-label>
+      <input matInput ngModel name="email" id="email">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Phone:</mat-label>
+      <input matInput ngModel name="phone" id="phone">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Job title:</mat-label>
+      <input matInput ngModel name="jobTitle" id="jobTitle">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Workplace:</mat-label>
+      <input matInput ngModel name="workPlace" id="workPlace">
+    </mat-form-field>
+<!--    <mat-form-field appearance="outline">
+      <mat-label>Image Url:</mat-label>
+      <input matInput ngModel name="imageUrl" id="imageUrl">
+    </mat-form-field>-->
+    <mat-form-field appearance="outline">
+      <mat-label>Image Url:</mat-label>
+      <mat-select [(value)]="selection" ngModel name="imageUrl" id="imageUrl">
+        <mat-option *ngFor="let avatar of avatars;" [value]="avatar.value" >
+          <img src='{{avatar.img}}' width="32" height="auto"> {{avatar.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p><img src="{{selection}}" width="64" height="auto" title="your image"></p>
+  </form>
+</ng-template>
+<!-- when doctor edited -->
+<ng-template #editDoctorDialogTemplate>
+
+  <form #editForm="ngForm" id="editForm" (ngSubmit)="onUpdateDoctor(editForm.value)">
+    <input type="hidden" ngModel="{{currentDoctor?.id}}" name="id" id="id">
+    <mat-form-field appearance="outline">
+      <mat-label>Name:</mat-label>
+      <input matInput ngModel="{{currentDoctor?.name}}" name="name" id="name">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>UIN Code:</mat-label>
+      <input matInput ngModel="{{currentDoctor?.uinCode}}" name="uinCode" id="uinCode">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>E-mail:</mat-label>
+      <input matInput ngModel="{{currentDoctor?.email}}" name="email" id="email">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Phone:</mat-label>
+      <input matInput ngModel="{{currentDoctor?.phone}}" name="phone" id="phone">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Job title:</mat-label>
+      <input matInput ngModel="{{currentDoctor?.jobTitle}}" name="jobTitle" id="jobTitle">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Workplace:</mat-label>
+      <input matInput ngModel="{{currentDoctor?.workPlace}}" name="workPlace" id="workPlace">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Image Url:</mat-label>
+      <input matInput ngModel="{{currentDoctor?.imageUrl}}" name="imageUrl" id="imageUrl">
+    </mat-form-field>
+  </form>
+</ng-template>
+<!-- when doctor deleted -->
+<ng-template #removeDoctorDialogTemplate>
+  <p>Are you sure you want to delete this doctor ?</p>
+  <form #deleteForm="ngForm" id="deleteForm" (ngSubmit)="onDeleteDoctor(deleteForm.value)">
+    <input type="hidden" ngModel="{{currentDoctor?.id}}" name="id" id="id">
+  </form>
+</ng-template>
+
+<!-- when patient added -->
+
+<ng-template #addPatientDialogTemplate>
+  <form #addPatientForm="ngForm" id="addPatientForm" (ngSubmit)="onAddPatient(addPatientForm)">
+    <input type="hidden" ngModel="{{currentDoctor?.id}}" name="doctorId" id="doctorId">
+    <mat-form-field appearance="standard">
+      <mat-label>Name:</mat-label>
+      <input matInput ngModel name="name" id="name">
+    </mat-form-field>
+    <mat-form-field appearance="standard">
+      <mat-label>EGN :</mat-label>
+      <input matInput ngModel name="egn" id="egn" required>
+    </mat-form-field>
+    <mat-form-field appearance="standard">
+      <mat-label>E-mail:</mat-label>
+      <input matInput ngModel name="email" id="email">
+    </mat-form-field>
+
+  </form>
+</ng-template>
+

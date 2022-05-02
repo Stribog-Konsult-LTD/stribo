@@ -1,0 +1,5 @@
+<div class="patients">
+  <div class="pholder" *ngFor="let patient of patients">
+    <app-patient-details (patientDeleted)="onPatientDeleted($event)" [dId]="doctorId" [currentPatient]="patient"></app-patient-details>
+  </div>
+</div>
